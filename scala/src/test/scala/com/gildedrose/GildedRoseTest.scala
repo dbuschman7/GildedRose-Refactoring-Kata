@@ -47,11 +47,12 @@ class GildedRoseTest extends FunSuite with Matchers {
   test("ageBackstage") {
     ageBackstage(ImmutableItem("name", 50, 1)) should be(ImmutableItem("name", 50, 2))
     ageBackstage(ImmutableItem("name", 11, 1)) should be(ImmutableItem("name", 11, 2))
-    ageBackstage(ImmutableItem("name", 10, 1)) should be(ImmutableItem("name", 10, 4))
-    ageBackstage(ImmutableItem("name", 6, 1)) should be(ImmutableItem("name", 6, 4))
-    ageBackstage(ImmutableItem("name", 5, 1)) should be(ImmutableItem("name", 5, 6))
-    ageBackstage(ImmutableItem("name", 1, 1)) should be(ImmutableItem("name", 1, 6))
-    ageBackstage(ImmutableItem("name", 0, 1)) should be(ImmutableItem("name", 0, 0))
+    ageBackstage(ImmutableItem("name", 10, 1)) should be(ImmutableItem("name", 10, 2))
+    ageBackstage(ImmutableItem("name", 6, 1)) should be(ImmutableItem("name", 6, 3))
+    ageBackstage(ImmutableItem("name", 5, 1)) should be(ImmutableItem("name", 5, 3))
+    ageBackstage(ImmutableItem("name", 4, 1)) should be(ImmutableItem("name", 4, 4))
+    ageBackstage(ImmutableItem("name", 1, 1)) should be(ImmutableItem("name", 1, 4))
+    ageBackstage(ImmutableItem("name", 0, 1)) should be(ImmutableItem("name", 0, 4))
     ageBackstage(ImmutableItem("name", -1, 1)) should be(ImmutableItem("name", -1, 0))
   }
 
@@ -66,10 +67,10 @@ class GildedRoseTest extends FunSuite with Matchers {
 
     // level 2 
     updateQuality(Seq(ImmutableItem("Backstage passes to a TAFKAL80ETC concert", 8, 49))).head should be(ImmutableItem("Backstage passes to a TAFKAL80ETC concert", 7, 50))
-    updateQuality(Seq(ImmutableItem("Backstage passes to a TAFKAL80ETC concert", 8, 20))).head should be(ImmutableItem("Backstage passes to a TAFKAL80ETC concert", 7, 23))
+    updateQuality(Seq(ImmutableItem("Backstage passes to a TAFKAL80ETC concert", 8, 20))).head should be(ImmutableItem("Backstage passes to a TAFKAL80ETC concert", 7, 22))
 
     // level 3
-    updateQuality(Seq(ImmutableItem("Backstage passes to a TAFKAL80ETC concert", 2, 20))).head should be(ImmutableItem("Backstage passes to a TAFKAL80ETC concert", 1, 25))
+    updateQuality(Seq(ImmutableItem("Backstage passes to a TAFKAL80ETC concert", 2, 20))).head should be(ImmutableItem("Backstage passes to a TAFKAL80ETC concert", 1, 23))
 
     // level 4
     updateQuality(Seq(ImmutableItem("Backstage passes to a TAFKAL80ETC concert", 0, 50))).head should be(ImmutableItem("Backstage passes to a TAFKAL80ETC concert", -1, 0))
