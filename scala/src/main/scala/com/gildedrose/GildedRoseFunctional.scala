@@ -12,7 +12,7 @@ object GildedRoseFunctional {
 
     def rulesToApply(name: String): Seq[ImmutableItem ⇒ ImmutableItem] = name match {
       case n if n.startsWith("Backstage passes") ⇒ Seq(decrementSellIn, ageBackstage, constrainQuality0to50)
-      case n if n.startsWith("Aged Brie")        ⇒ Seq(decrementSellIn, ageDownBy(-1), constrainQuality0to50)
+      case n if n.startsWith("Aged Brie")        ⇒ Seq(decrementSellIn, ageBrie, constrainQuality0to50)
       case n if n.startsWith("Sulfuras")         ⇒ Seq(ageSulfuras) // do no decrement sellIn or constrain
       case n if n.startsWith("Conjured")         ⇒ Seq(decrementSellIn, ageDownBy(2), constrainQuality0to50)
       case _                                     ⇒ Seq(decrementSellIn, ageDownBy(1), constrainQuality0to50)
@@ -38,7 +38,7 @@ object GildedRoseFunctional {
 
   // Rule : "Aged Brie" actually increases in Quality the older it gets
   // Legacy : follows normal ageBy but in reverse, so after with negative sellIn, quality is increased by 2 
-  private[gildedrose] def ageBrie(item: ImmutableItem): ImmutableItem = ageDownBy(-1)(item)
+  private[gildedrose] def ageBrie: ImmutableItem => ImmutableItem = ageDownBy(-1)
 
   // Rule : Once the sell by date has passed, Quality degrades twice as fast
   // Rule : At the end of each day our system lowers both values for every item [ NOTE : quality ONLY done here ] 
