@@ -6,6 +6,7 @@ class GildedRoseTest extends FunSuite with Matchers {
 
   import GildedRoseFunctional._
 
+
   test("decrementSellIn") {
     decrementSellIn(ImmutableItem("name", 5, 1)) should be(ImmutableItem("name", 4, 1))
     decrementSellIn(ImmutableItem("name", 1, 1)) should be(ImmutableItem("name", 0, 1))
@@ -80,7 +81,7 @@ class GildedRoseTest extends FunSuite with Matchers {
     updateQuality(Seq(ImmutableItem("Sulfuras, Hand of Ragnaros", 10, 10))).head should be(ImmutableItem("Sulfuras, Hand of Ragnaros", 10, 80))
   }
 
-  test("updateQuality - commin items ") {
+  test("updateQuality - common items ") {
     updateQuality(Seq(ImmutableItem("Some other item", 10, 65))).head should be(ImmutableItem("Some other item", 9, 50))
     updateQuality(Seq(ImmutableItem("Some other item", 10, 10))).head should be(ImmutableItem("Some other item", 9, 9))
     updateQuality(Seq(ImmutableItem("Some other item", -1, 10))).head should be(ImmutableItem("Some other item", -2, 8))

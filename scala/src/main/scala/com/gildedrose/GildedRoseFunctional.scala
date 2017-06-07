@@ -1,6 +1,7 @@
 package com.gildedrose
 
 case class ImmutableItem(name: String, sellIn: Int, quality: Int)
+
 object ImmutableItem {
   def fromItem(in: Item) = ImmutableItem(in.name, in.sellIn, in.quality)
 }
@@ -38,15 +39,15 @@ object GildedRoseFunctional {
 
   // Rule : "Aged Brie" actually increases in Quality the older it gets
   // Legacy : follows normal ageBy but in reverse, so after with negative sellIn, quality is increased by 2 
-  private[gildedrose] def ageBrie: ImmutableItem => ImmutableItem = ageDownBy(-1)
+  private[gildedrose] def ageBrie: ImmutableItem ⇒ ImmutableItem = ageDownBy(-1)
 
   // Rule : Once the sell by date has passed, Quality degrades twice as fast
   // Rule : At the end of each day our system lowers both values for every item [ NOTE : quality ONLY done here ] 
   // Rule : "Conjured" items degrade in Quality twice as fast as normal items
   private[gildedrose] def ageDownBy(ageBy: Int)(item: ImmutableItem): ImmutableItem = {
     val newQuality = item.sellIn match {
-      case in if in >= 0  ⇒ item.quality - ageBy
-      case in if in < 0 ⇒ item.quality - (ageBy * 2)
+      case in if in >= 0 ⇒ item.quality - ageBy
+      case in if in < 0  ⇒ item.quality - (ageBy * 2)
     }
     item.copy(quality = newQuality)
   }
