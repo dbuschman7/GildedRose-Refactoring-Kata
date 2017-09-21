@@ -26,8 +26,8 @@ object CommandLineArgsTest {
 
 		args match {
 			case Nil                                           => result
-			case "--foo" :: value :: tail                      => toMap(tail, result ++ Map('foo -> value.trim))
-			case switch :: filename :: Nil if isSwitch(switch) => result ++ Map('file -> filename.trim)
+			case "--foo" :: value :: tail                      => toMap(tail, result + ('foo -> value.trim))
+			case switch :: filename :: Nil if isSwitch(switch) => result + ('file -> filename.trim)
 			case _                                             => println("Unknown argument"); sys.exit(1);
 		}
 	}
