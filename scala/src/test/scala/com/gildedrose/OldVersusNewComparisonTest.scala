@@ -1,7 +1,6 @@
 package com.gildedrose
 
 import org.scalatest.FunSuite
-import java.util.Arrays
 
 class OldVersusNewComparisonTest extends FunSuite {
 
@@ -12,7 +11,6 @@ class OldVersusNewComparisonTest extends FunSuite {
     //    val name = "Sulfuras, Hand of Ragnaros"
     val name = "Common Item"
     //    val name = "Conjured Item"
-    val sellIn = 1
     val quality = 10
 
     val diffs = (-5 to 55).flatMap { sellIn ⇒
@@ -26,7 +24,7 @@ class OldVersusNewComparisonTest extends FunSuite {
 
       val second = GildedRoseFunctional.updateQuality(Seq(ImmutableItem(name, sellIn, quality))).head
       if (first != second) {
-        println(f"Original   - ${name}%30s  ${sellIn}%3d ${quality}%3d")
+        println(f"Original   - $name%30s  $sellIn%3d $quality%3d")
         println(f"Old        - ${first.name}%30s  ${first.sellIn}%3d ${first.quality}%3d")
         println(f"Functional - ${second.name}%30s  ${second.sellIn}%3d ${second.quality}%3d")
         println()
@@ -34,18 +32,18 @@ class OldVersusNewComparisonTest extends FunSuite {
       } else None
     }
 
-    if (diffs.size > 0) fail("Diffs found")
+    if (diffs.nonEmpty) fail("Diffs found")
   }
 
   ignore("Compare both algothrithms ") {
 
     case class TestRun(original: ImmutableItem, left: ImmutableItem, right: ImmutableItem) {
       val (good: Boolean, msg: Option[String]) = {
-        ((left.name == right.name), (left.sellIn == right.sellIn), (left.quality == right.quality)) match {
+        (left.name == right.name, left.sellIn == right.sellIn, left.quality == right.quality) match {
           case (true, true, true) ⇒ (true, None) // good match
-          case (false, _, _)      ⇒ (false, Option(s"Name mismatch for ${original} - Left(${left.name})  Right(${right.name})"))
-          case (_, false, _)      ⇒ (false, Option(s"SellIn mismatch for ${original} - Left(${left.sellIn})  Right(${right.sellIn})"))
-          case (_, _, false)      ⇒ (false, Option(s"Quality mismatch for ${original} - Left(${left.quality})  Right(${right.quality})"))
+          case (false, _, _)      ⇒ (false, Option(s"Name mismatch for $original - Left(${left.name})  Right(${right.name})"))
+          case (_, false, _)      ⇒ (false, Option(s"SellIn mismatch for $original - Left(${left.sellIn})  Right(${right.sellIn})"))
+          case (_, _, false)      ⇒ (false, Option(s"Quality mismatch for $original - Left(${left.quality})  Right(${right.quality})"))
         }
       }
     }
@@ -77,10 +75,10 @@ class OldVersusNewComparisonTest extends FunSuite {
 
     // summarize results 
     val resultsToDisplay = 10
-    val successes = results.filter(_.good).size
+    val successes = results.count(_.good)
     val diffCount = results.filterNot(_.good).size
     val productsWithDiffs = results.filterNot(_.good).map(_.original.name).toSet
-    val productsWithSuccess = results.filter(_.good).map(_.original.name).toSet
+//    val productsWithSuccess = results.filter(_.good).map(_.original.name).toSet
 
     val errors = results
       .filterNot(_.good)
@@ -91,9 +89,9 @@ class OldVersusNewComparisonTest extends FunSuite {
     println("* Products in Success")
     println("****************************")
     println("")
-    errors.map {
-      case (name, msgs) ⇒
-        msgs.map(_.right).map(println)
+    errors.foreach {
+      case (_, msgs) ⇒
+        msgs.map(_.right).foreach(println)
         println("")
         println("****************************")
     }
@@ -102,20 +100,20 @@ class OldVersusNewComparisonTest extends FunSuite {
     println("* Products in Error")
     println("****************************")
     println("")
-    errors.map {
-      case (name, msgs) ⇒
-        msgs.flatMap(_.msg).map(println)
+    errors.foreach {
+      case (_, msgs) ⇒
+        msgs.flatMap(_.msg).foreach(println)
         println("")
         println("****************************")
     }
     println("")
     println("****************************")
-    println(s"Total successes     - ${successes}")
-    println(s"Total diffs         - ${diffCount}")
+    println(s"Total successes     - $successes")
+    println(s"Total diffs         - $diffCount")
     println(s"Products with Diffs - ${productsWithDiffs.mkString("[", ", ", "]")}")
     println("****************************")
     println("")
 
-    if (diffCount > 0) fail(s"Found ${diffCount} diffs")
+    if (diffCount > 0) fail(s"Found $diffCount diffs")
   }
 }

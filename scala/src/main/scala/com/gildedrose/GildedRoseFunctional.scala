@@ -21,15 +21,15 @@ object GildedRoseFunctional {
 
     items.map { item ⇒
       rulesToApply(item.name)
-        .foldLeft(item) { case (item, transform) ⇒ transform(item) }
+        .foldLeft(item) { case (i, transform) ⇒ transform(i) }
     }
   }
 
-  // 
+  //
   // Internal Rules for items
   // ////////////////////////////////////
 
-  // Rule : At the end of each day our system lowers both values for every item [ NOTE : sellIn ONLY done here ] 
+  // Rule : At the end of each day our system lowers both values for every item [ NOTE : sellIn ONLY done here ]
   private[gildedrose] def decrementSellIn(in: ImmutableItem) = in.copy(sellIn = in.sellIn - 1)
 
   // Rule : The Quality of an item is never negative
@@ -38,11 +38,11 @@ object GildedRoseFunctional {
   private[gildedrose] def constrainQuality0to50(in: ImmutableItem) = in.copy(quality = Math.max(0, Math.min(in.quality, 50)))
 
   // Rule : "Aged Brie" actually increases in Quality the older it gets
-  // Legacy : follows normal ageBy but in reverse, so after with negative sellIn, quality is increased by 2 
+  // Legacy : follows normal ageBy but in reverse, so after with negative sellIn, quality is increased by 2
   private[gildedrose] def ageBrie: ImmutableItem ⇒ ImmutableItem = ageDownBy(-1)
 
   // Rule : Once the sell by date has passed, Quality degrades twice as fast
-  // Rule : At the end of each day our system lowers both values for every item [ NOTE : quality ONLY done here ] 
+  // Rule : At the end of each day our system lowers both values for every item [ NOTE : quality ONLY done here ]
   // Rule : "Conjured" items degrade in Quality twice as fast as normal items
   private[gildedrose] def ageDownBy(ageBy: Int)(item: ImmutableItem): ImmutableItem = {
     val newQuality = item.sellIn match {
